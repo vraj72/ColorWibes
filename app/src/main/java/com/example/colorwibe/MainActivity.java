@@ -17,6 +17,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Whitelist;
 
 import java.io.UnsupportedEncodingException;
 
@@ -83,8 +87,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void serach(String html){
-        int index = 0 ;
-        index=html.indexOf("#");
-//        Toast.makeText(MainActivity.this,"123 "+Integer.toString(index),Toast.LENGTH_SHORT).show();
+
+        boolean valid = Jsoup.isValid(html, Whitelist.basic());
+        Document cleanDoc;
+
+        if (valid) {
+            Toast.makeText(MainActivity.this,"not valid",Toast.LENGTH_SHORT).show();
+             cleanDoc= Jsoup.parse(html);
+
+        } else {
+
+            Toast.makeText(MainActivity.this,"valid",Toast.LENGTH_SHORT).show();
+
+            Document dirtyDoc = Jsoup.parse(html);
+            cleanDoc = new Cleaner(Whitelist.basic()).clean(dirtyDoc);
+
+        }
+
+        Log.i("volleyABC" ,"doc "+(cleanDoc.toString()));
+        String title = cleanDoc.title();
+        Log.i("volleyABC" ,"doc "+title);
+
+        String keyword =cleanDoc.select("meta[name=link]").first().attr("content");
+
+
+
+        Toast.makeText(MainActivity.this,"doc "+keyword,Toast.LENGTH_SHORT).show();
     }
 }
