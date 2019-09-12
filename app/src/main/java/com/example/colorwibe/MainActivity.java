@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i("volleyABC response", response);
                 Toast.makeText(MainActivity.this,response, Toast.LENGTH_SHORT).show();
-                serach(response);
-
+                serach_jsoup(response);
+//                search(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void serach(String html){
+    void serach_jsoup(String html){
 
         boolean valid = Jsoup.isValid(html, Whitelist.basic());
         Document cleanDoc;
@@ -113,15 +113,21 @@ public class MainActivity extends AppCompatActivity {
         String title = cleanDoc.title();
         Log.i("volleyABC" ,"doc "+title);
 
-        Elements css = cleanDoc.select("link[href]");
-        Element imports = cleanDoc.se
+        Elements css = cleanDoc.select("head").select("link[rel=stylesheet]");
+        Elements imports = cleanDoc.select("meta");
 
-        Log.i("volley", imports.tagName()+imports.attr("abs:href")+imports.attr("rel"));
-
-        Log.i("volley","\nImports: "+css.size());
+        Log.i("volley1","\nImports: "+css.size()+imports.size());
         for (Element link : css) {
             Log.i("volley", link.tagName()+link.attr("abs:href")+link.attr("rel"));
         }
+
+    }
+
+    void search(String html){
+
+
+
+
 
     }
 }
