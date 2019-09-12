@@ -19,9 +19,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
@@ -104,14 +107,21 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
+
         Log.i("volleyABC" ,"doc "+(cleanDoc.toString()));
         String title = cleanDoc.title();
         Log.i("volleyABC" ,"doc "+title);
 
-        String keyword =cleanDoc.select("meta[name=link]").first().attr("content");
+        Elements css = cleanDoc.select("link[href]");
+        Element imports = cleanDoc.se
 
+        Log.i("volley", imports.tagName()+imports.attr("abs:href")+imports.attr("rel"));
 
+        Log.i("volley","\nImports: "+css.size());
+        for (Element link : css) {
+            Log.i("volley", link.tagName()+link.attr("abs:href")+link.attr("rel"));
+        }
 
-        Toast.makeText(MainActivity.this,"doc "+keyword,Toast.LENGTH_SHORT).show();
     }
 }
