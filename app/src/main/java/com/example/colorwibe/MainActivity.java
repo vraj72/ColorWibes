@@ -1,12 +1,14 @@
 package com.example.colorwibe;
 
 import android.content.Intent;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,14 +32,19 @@ import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
     String server_url;
+    TextView response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         final EditText url_e = findViewById(R.id.url_edit);
         Button url_b=findViewById(R.id.url_enter);
+        response=findViewById(R.id.textView_response);
 
 
         url_b.setOnClickListener(new View.OnClickListener() {
@@ -51,11 +58,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
 
-                    Intent recycle= new Intent(MainActivity.this,Color_recycler.class);
-                    startActivity(recycle);
+                    getData(server_url);
 
-//                    getData(server_url);
-
+//                    Intent recycle= new Intent(MainActivity.this,Color_recycler.class);
+//                    startActivity(recycle);
                 }
 
 
@@ -63,75 +69,49 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    void getData(String server_url){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,server_url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+    void getData(String url){
 
-                Log.i("volleyABC response", response);
-                Toast.makeText(MainActivity.this,response, Toast.LENGTH_SHORT).show();
-                serach_jsoup(response);
-//                search(response);
+        Document doc = null;
+        try {
+            doc=Jsoup.connect(url).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String code =doc.toString();
+        Log.i("volley",code);
+        getHashes(code);
+
+        Elements links=doc.select("head").select("link[rel=stylesheet]");
+        for(Element item : links){
+             String href=item.attr("href").toString();
+            String newurl=url+href;
+            Log.i("volley",newurl);
+
+            Document newdoc = null;
+            try {
+                newdoc=Jsoup.connect(newurl).get();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                try{
-                    Log.i("volleyABC" ,Integer.toString(error.networkResponse.statusCode));
-                    Toast.makeText(MainActivity.this,error.networkResponse.statusCode,Toast.LENGTH_SHORT).show();//it will not occur as authenticating at start
-                    error.printStackTrace();}
-                catch (Exception e)
-                {
-                    Log.i("volleyABC" ,"exception");
-                    Toast.makeText(MainActivity.this,"Enter Valid url",Toast.LENGTH_SHORT).show();} //occur if connection not get estabilished
-            }
-
-        });
-        RequestQueue requestQueue= Volley.newRequestQueue(MainActivity.this);
-        requestQueue.add(stringRequest);
-
-    }
-
-    void serach_jsoup(String html){
-
-        boolean valid = Jsoup.isValid(html, Whitelist.basic());
-        Document cleanDoc;
-
-        if (valid) {
-            Toast.makeText(MainActivity.this,"not valid",Toast.LENGTH_SHORT).show();
-             cleanDoc= Jsoup.parse(html);
-
-        } else {
-
-            Toast.makeText(MainActivity.this,"valid",Toast.LENGTH_SHORT).show();
-
-            Document dirtyDoc = Jsoup.parse(html);
-            cleanDoc = new Cleaner(Whitelist.basic()).clean(dirtyDoc);
-
+            String temp=newdoc.body().toString();
+            response.setText(temp);
+            getHashes(temp);
+            Log.i("volley",temp);
         }
 
 
+    }
 
-        Log.i("volleyABC" ,"doc "+(cleanDoc.toString()));
-        String title = cleanDoc.title();
-        Log.i("volleyABC" ,"doc "+title);
+    void getHashes(String code){
 
-        Elements css = cleanDoc.select("head").select("link[rel=stylesheet]");
-        Elements imports = cleanDoc.select("meta");
-
-        Log.i("volley1","\nImports: "+css.size()+imports.size());
-        for (Element link : css) {
-            Log.i("volley", link.tagName()+link.attr("abs:href")+link.attr("rel"));
+        for(int i=0; i< code.length();i++ )
+        {
+            if(code.charAt(i) == '#'){
+                Log.i("volley#", String.valueOf(code.charAt(i)));
+            }
         }
-
     }
 
-    void search(String html){
-
-
-
-
-
-    }
 }
