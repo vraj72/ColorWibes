@@ -29,10 +29,13 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     String server_url;
     TextView response;
+    List colors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
         final EditText url_e = findViewById(R.id.url_edit);
         Button url_b=findViewById(R.id.url_enter);
         response=findViewById(R.id.textView_response);
+        colors=new ArrayList<String>();
+        colors.add("#ff0000");//for debugging
+        colors.add("#7CFC00");
+        colors.add("#FF6000");
+        colors.add("#FF0000");
 
 
         url_b.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +66,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
 
-                    getData(server_url);
+//                    getData(server_url);
 
-//                    Intent recycle= new Intent(MainActivity.this,Color_recycler.class);
-//                    startActivity(recycle);
+                    Intent recycle= new Intent(MainActivity.this,Color_recycler.class);
+                    recycle.putStringArrayListExtra("Colors",(ArrayList<String>) colors);
+                    startActivity(recycle);
                 }
 
 
@@ -81,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         String code =doc.toString();
         Log.i("volley",code);
-        getHashes(code);
+
 
         Elements links=doc.select("head").select("link[rel=stylesheet]");
         for(Element item : links){
@@ -96,22 +105,18 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             String temp=newdoc.body().toString();
-            response.setText(temp);
-            getHashes(temp);
-            Log.i("volley",temp);
+            code=code+temp;
+            response.setText(code);
+            getHashes(code);
+            Log.i("volley", String.valueOf(temp.length()));
         }
 
 
     }
 
     void getHashes(String code){
+        Log.i("volleyL", String.valueOf(code.length()));
 
-        for(int i=0; i< code.length();i++ )
-        {
-            if(code.charAt(i) == '#'){
-                Log.i("volley#", String.valueOf(code.charAt(i)));
-            }
-        }
     }
 
 }
