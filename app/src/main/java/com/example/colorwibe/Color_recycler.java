@@ -31,7 +31,7 @@ public class Color_recycler extends AppCompatActivity {
 
         } else {
             exColor= extras.getStringArrayList("Colors");
-            Log.i("volley", String.valueOf(exColor));
+            Log.i("volleyR", String.valueOf(exColor));
             for (int i = 0; i < exColor.size(); i++)
             {
                 mColorlist.add(new ColorItem(exColor.get(i).toString(),"",""));

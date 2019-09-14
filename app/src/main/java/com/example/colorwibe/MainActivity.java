@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     String server_url;
     TextView response;
     List colors;
+    List list1 = new ArrayList<String>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
 
-//                    getData(server_url);
+                      getData(server_url);
 
                     Intent recycle= new Intent(MainActivity.this,Color_recycler.class);
-                    recycle.putStringArrayListExtra("Colors",(ArrayList<String>) colors);
+                    recycle.putStringArrayListExtra("Colors",(ArrayList<String>) list1);
                     startActivity(recycle);
                 }
 
@@ -91,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         String code =doc.toString();
         Log.i("volley",code);
 
-
+        String back="background-color:";
         Elements links=doc.select("head").select("link[rel=stylesheet]");
         for(Element item : links){
              String href=item.attr("href").toString();
@@ -105,17 +108,30 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             String temp=newdoc.body().toString();
-            code=code+temp;
-            response.setText(code);
-            getHashes(code);
-            Log.i("volley", String.valueOf(temp.length()));
+            String[] list=temp.split(";");
+
+
+            for (String i: list){
+                if(i.contains(back)){
+                    if(i.length()<25 && i.indexOf(back)==0){
+                        i=i.substring(back.length());
+
+                        if(list1.indexOf(i)==-1){
+
+                            int ind=i.indexOf("\\");
+                            if(ind<0)
+                            list1.add(i);
+                            else{i=i.substring(0,ind);list1.add(i);}
+
+                        }
+                    }
+                }
+            }
+
+
+            
         }
 
-
-    }
-
-    void getHashes(String code){
-        Log.i("volleyL", String.valueOf(code.length()));
 
     }
 
