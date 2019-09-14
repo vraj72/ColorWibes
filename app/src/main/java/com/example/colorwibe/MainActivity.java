@@ -11,13 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.jsoup.Jsoup;
@@ -66,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
 
-//                    getData(server_url);
+                    getData(server_url);
 
-                    Intent recycle= new Intent(MainActivity.this,Color_recycler.class);
-                    recycle.putStringArrayListExtra("Colors",(ArrayList<String>) colors);
-                    startActivity(recycle);
+//                    Intent recycle= new Intent(MainActivity.this,Color_recycler.class);
+//                    recycle.putStringArrayListExtra("Colors",(ArrayList<String>) colors);
+//                    startActivity(recycle);
                 }
 
 
@@ -90,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         String code =doc.toString();
         Log.i("volley",code);
+        gethashesHTML(doc);
 
 
         Elements links=doc.select("head").select("link[rel=stylesheet]");
@@ -117,6 +111,15 @@ public class MainActivity extends AppCompatActivity {
     void getHashes(String code){
         Log.i("volleyL", String.valueOf(code.length()));
 
+    }
+
+    void gethashesHTML(Document doc){
+        Elements internal =doc.select("style");
+        for(Element i : internal){
+        Log.i("volleyi",i.toString());
+        String Icss=i.toString();
+        getHashes(Icss);
+        }
     }
 
 }

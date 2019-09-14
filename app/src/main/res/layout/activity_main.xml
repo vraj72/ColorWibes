@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/back_activity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
         android:text="Enter URL of your Favorite Site"
         android:paddingTop="30dp"
         android:paddingLeft="30dp"
-        android:textColor="@color/dark_slate_blue"
+        android:textColor="@color/Crimson"
         />
     <EditText
         android:layout_width="match_parent"
@@ -29,6 +30,7 @@
         android:hint="https://example.com"
         android:layout_height="wrap_content"
         android:id="@+id/url_edit"
+        android:textColor="@color/MidnightBlue"
         />
 
     <Button
@@ -36,7 +38,7 @@
         android:layout_height="wrap_content"
         android:text="Get ColorWibes"
         android:textColor="@color/colorPrimaryDark"
-        android:background="@color/Crimson"
+        android:background="@drawable/gradient_back"
         android:id="@+id/url_enter"
         android:padding="20dp"/>
 
