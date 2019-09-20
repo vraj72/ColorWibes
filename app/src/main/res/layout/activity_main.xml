@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:padding="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:hint="https://example.com"
+        android:hint="www.example.com"
         android:layout_height="wrap_content"
         android:id="@+id/url_edit"
         android:textColor="@color/MidnightBlue"
@@ -49,6 +49,19 @@
         />
     </LinearLayout>
 
-</ScrollView>
+    <Button
+        android:textColor="#FFE819"
+        android:id="@+id/favorite_activity_main"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="26dp"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/circular_button"
+        android:drawableTop="@drawable/ic_star_black_24dp"
+        />
+
+</RelativeLayout>
 
 

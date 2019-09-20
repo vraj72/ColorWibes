@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ColorWibes.iml" filepath="$PROJECT_DIR$/ColorWibes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ColorWibe.iml" filepath="$PROJECT_DIR$/ColorWibe.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
